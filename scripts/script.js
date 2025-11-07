@@ -1,3 +1,5 @@
+let fire;
+
 function start() {
   const fireDataWidth = 200;
   const fireDataHeight = 200;
@@ -42,23 +44,41 @@ function start() {
   ];
   const fireDecay = 1.25;
   const fireWind = 1.25;
+  const fireIntensityLabel = document.getElementById("intensity-label");
 
-  const fire = new Fire(
+  fire = new Fire(
     fireDataWidth,
     fireDataHeight,
     fireCanvas,
     firePalleteRGB,
     fireDecay,
-    fireWind
+    fireWind,
+    fireIntensityLabel
   );
 
-  fire.addFireSource(36);
+  fire.setFireIntensity(36);
 
   fire.update();
 }
 
+function decrementIntensity() {
+  fire.decrementIntensity();
+}
+
+function incrementIntensity() {
+  fire.incrementIntensity();
+}
+
+async function minimizeIntensity() {
+  await fire.minimizeIntensity();
+}
+
+function maximizeIntensity() {
+  fire.maximizeIntensity();
+}
+
 class Fire {
-  constructor(width, height, canvas, palette, decay, wind) {
+  constructor(width, height, canvas, palette, decay, wind, intensityLabel) {
     this.width = width;
     this.height = height;
 
@@ -75,6 +95,9 @@ class Fire {
 
     this.decay = decay;
     this.wind = wind;
+
+    this.intensity = 0;
+    this.intensityLabel = intensityLabel;
   }
 
   createFireData() {
@@ -88,13 +111,31 @@ class Fire {
     return newFireData;
   }
 
-  addFireSource(source) {
+  setFireIntensity(intensity) {
+    this.intensity = intensity;
+    this.intensityLabel.innerText = `INTENSITY: ${this.intensity}`;
     const firstFireIndexAtLastRow = this.width * this.height - this.width;
     const lastFireIndexAtLastRow = this.width * this.height - 1;
 
     for (let i = firstFireIndexAtLastRow; i <= lastFireIndexAtLastRow; i++) {
-      this.data[i] = source;
+      this.data[i] = intensity;
     }
+  }
+
+  incrementIntensity() {
+    this.setFireIntensity(this.intensity + 1);
+  }
+
+  decrementIntensity() {
+    this.setFireIntensity(this.intensity - 1);
+  }
+
+  async minimizeIntensity() {
+    this.setFireIntensity(0);
+  }
+
+  async maximizeIntensity() {
+    this.setFireIntensity(this.palette.length - 1);
   }
 
   spreadFire() {

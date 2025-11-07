@@ -67,3 +67,39 @@ table tr td {
 
   font-size: 8pt;
 }
+
+#intensity-label {
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+
+#inputs {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  padding: 16px;
+  background-color: #f8f8f840;
+
+  border-radius: 8px;
+  border: solid #f2f2f2 1px;
+}
+
+#inputs button {
+  background-color: #f2f2f2;
+  border-style: none;
+  border-radius: 4px;
+
+  padding: 4px 30px;
+
+  font-size: 16pt;
+  font-family: "Pixelify Sans", Verdana, Geneva, Tahoma, sans-serif;
+
+  transition: all;
+}
+
+#inputs button:hover {
+  background-color: #c0c0c0;
+
+  transform: scale(105%);
+  cursor: pointer;
+}
