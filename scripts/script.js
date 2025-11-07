@@ -1,8 +1,8 @@
 function start() {
   console.log("Script has started!");
 
-  const fireDataWidth = 100;
-  const fireDataHeight = 100;
+  const fireDataWidth = 200;
+  const fireDataHeight = 200;
   const firePallete = [
     "#070707",
     "#1f0707",
@@ -42,14 +42,53 @@ function start() {
     "#FFFFFF",
   ];
 
+  const firePalleteRGB = [
+    "rgb(7, 7, 7)",
+    "rgb(31, 7, 7)",
+    "rgb(47, 15, 7)",
+    "rgb(71, 15, 7)",
+    "rgb(87, 23, 7)",
+    "rgb(103, 31, 7)",
+    "rgb(119, 31, 7)",
+    "rgb(143, 39, 7)",
+    "rgb(159, 47, 7)",
+    "rgb(175, 63, 7)",
+    "rgb(191, 71, 7)",
+    "rgb(199, 71, 7)",
+    "rgb(223, 79, 7)",
+    "rgb(223, 87, 7)",
+    "rgb(223, 87, 7)",
+    "rgb(215, 95, 7)",
+    "rgb(215, 103, 15)",
+    "rgb(207, 111, 15)",
+    "rgb(207, 119, 15)",
+    "rgb(207, 127, 15)",
+    "rgb(207, 135, 23)",
+    "rgb(199, 135, 23)",
+    "rgb(199, 143, 23)",
+    "rgb(199, 151, 31)",
+    "rgb(191, 159, 31)",
+    "rgb(191, 159, 31)",
+    "rgb(191, 167, 39)",
+    "rgb(191, 167, 39)",
+    "rgb(191, 175, 47)",
+    "rgb(183, 175, 47)",
+    "rgb(183, 183, 47)",
+    "rgb(183, 183, 55)",
+    "rgb(207, 207, 111)",
+    "rgb(223, 223, 159)",
+    "rgb(239, 239, 199)",
+    "rgb(255, 255, 255)",
+  ];
+
   let fireData = createFireData(fireDataWidth, fireDataHeight);
 
   fireData = addFireSource(fireDataWidth, fireDataHeight, fireData, 36);
 
   setInterval(() => {
     fireData = updateFire(fireDataWidth, fireDataHeight, fireData);
-    renderFire(fireDataWidth, fireDataHeight, fireData, firePallete);
-  }, 60);
+    renderFire(fireDataWidth, fireDataHeight, fireData, firePalleteRGB);
+  }, 10);
 }
 
 function createFireData(width, height) {
@@ -88,8 +127,8 @@ function updateFire(width, height, data) {
         continue;
       }
 
-      const decay = Math.floor(Math.random() * 2);
-      const wind = Math.floor(Math.random() * 2);
+      const decay = Math.floor(Math.random() * 1.3);
+      const wind = Math.floor(Math.random() * 1.25);
       let newFireValue = newFireData[fireIndexBelow] - decay;
       newFireValue = Math.max(newFireValue, 0);
 
@@ -101,32 +140,29 @@ function updateFire(width, height, data) {
 }
 
 function renderFire(width, height, data, palette) {
-  const fireDiv = document.getElementById("fire");
+  const fireCanvas = document.getElementById("fire");
+  const fireContext = fireCanvas.getContext("2d");
 
-  const fireTable = document.createElement("table");
-  fireTable.style.aspectRatio = width / height;
-  const cellSize = 500 / width;
+  fireContext.fillStyle = palette[0];
+  fireContext.clearRect(0, 0, fireCanvas.width, fireCanvas.height);
+  fireContext.imageSmoothingEnabled = false;
+
+  const cellSize = fireCanvas.width / width;
 
   for (let i = 0; i < height; i++) {
-    const fireRow = document.createElement("tr");
-
     for (let j = 0; j < width; j++) {
+      const fireX = j * cellSize;
+      const fireY = i * cellSize;
       const fireIndex = i * width + j;
       const fireIntensity = data[fireIndex];
-      const fireColor = palette[fireIntensity - 1];
-      const fireCell = document.createElement("td");
+      const fireColor = palette[fireIntensity];
 
-      fireCell.style.backgroundColor = fireColor;
-      fireCell.style.width = `${cellSize}px`;
-      fireCell.style.height = `${cellSize}px`;
+      fireContext.fillStyle = fireColor;
+      fireContext.fillRect(fireX, fireY, cellSize, cellSize);
 
-      fireRow.appendChild(fireCell);
+      //   console.log(fireX, fireY, fireCellSize, fireCellSize);
     }
-
-    fireTable.appendChild(fireRow);
   }
-
-  fireDiv.replaceChildren(fireTable);
 }
 
 document.addEventListener("DOMContentLoaded", () => {

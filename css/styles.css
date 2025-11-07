@@ -1,5 +1,5 @@
 body {
-  background: linear-gradient(45deg, #2b0000 0%, #ad3700 100%);
+  background: #0f0f0f;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -7,7 +7,7 @@ body {
   width: "full";
   height: 100vh;
 
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: "Pixelify Sans", Verdana, Geneva, Tahoma, sans-serif;
   color: #f2f2f2;
 
   overflow: hidden;
@@ -40,13 +40,15 @@ a:hover {
   border-radius: 20px;
   overflow: hidden;
 
-  border: solid #f2f2f2 2px;
+  /* border: solid #f2f2f2 2px; */
 }
 
-table {
+canvas {
   border-collapse: collapse;
   width: 500px;
   height: 500px;
+
+  background-color: #070707;
 }
 
 table tr {
