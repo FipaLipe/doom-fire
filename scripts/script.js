@@ -8,7 +8,10 @@ function start() {
 
   fireData = addFireSource(fireDataWidth, fireDataHeight, fireData, 36);
 
-  renderFire(fireDataWidth, fireDataHeight, fireData);
+  setInterval(() => {
+    fireData = updateFire(fireDataWidth, fireDataHeight, fireData);
+    renderFire(fireDataWidth, fireDataHeight, fireData);
+  }, 100);
 }
 
 function createFireData(width, height) {
@@ -35,7 +38,28 @@ function addFireSource(width, height, data, source) {
   return newFireData;
 }
 
-function updateFire() {}
+function updateFire(width, height, data) {
+  const newFireData = data;
+
+  for (let j = 0; j < width; j++) {
+    for (let i = 0; i < height; i++) {
+      const fireIndex = i * width + j;
+      const fireIndexBelow = fireIndex + width;
+
+      if (fireIndexBelow >= newFireData.length) {
+        continue;
+      }
+
+      const decay = 1;
+      let newFireValue = newFireData[fireIndexBelow] - decay;
+      newFireValue = Math.max(newFireValue, 0);
+
+      newFireData[fireIndex] = newFireValue;
+    }
+  }
+
+  return newFireData;
+}
 
 function renderFire(width, height, data) {
   const fireDiv = document.getElementById("fire");
@@ -56,7 +80,7 @@ function renderFire(width, height, data) {
     fireTable.appendChild(fireRow);
   }
 
-  fireDiv.appendChild(fireTable);
+  fireDiv.replaceChildren(fireTable);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
