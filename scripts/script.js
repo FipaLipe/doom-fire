@@ -6,6 +6,8 @@ function start() {
 
   let fireData = createFireData(fireDataWidth, fireDataHeight);
 
+  fireData = addFireSource(fireDataWidth, fireDataHeight, fireData, 36);
+
   renderFire(fireDataWidth, fireDataHeight, fireData);
 }
 
@@ -15,6 +17,19 @@ function createFireData(width, height) {
   let newFireData = [];
   for (let i = 0; i < totalCellCount; i++) {
     newFireData.push(0);
+  }
+
+  return newFireData;
+}
+
+function addFireSource(width, height, data, source) {
+  const newFireData = data;
+
+  const firstFireIndexAtLastRow = width * height - width;
+  const lastFireIndexAtLastRow = width * height - 1;
+
+  for (let i = firstFireIndexAtLastRow; i <= lastFireIndexAtLastRow; i++) {
+    newFireData[i] = source;
   }
 
   return newFireData;
@@ -33,7 +48,7 @@ function renderFire(width, height, data) {
     for (let j = 0; j < width; j++) {
       const fireIndex = i * width + j;
       const fireCell = document.createElement("td");
-      fireCell.innerText = fireIndex;
+      fireCell.innerText = data[fireIndex];
 
       fireRow.appendChild(fireCell);
     }
