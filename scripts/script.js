@@ -1,8 +1,46 @@
 function start() {
   console.log("Script has started!");
 
-  let fireDataWidth = 10;
-  let fireDataHeight = 10;
+  const fireDataWidth = 10;
+  const fireDataHeight = 10;
+  const firePallete = [
+    "#070707",
+    "#1f0707",
+    "#2f0f07",
+    "#470f07",
+    "#571707",
+    "#671f07",
+    "#771f07",
+    "#8f2707",
+    "#9f2f07",
+    "#af3f07",
+    "#bf4707",
+    "#c74707",
+    "#DF4F07",
+    "#DF5707",
+    "#DF5707",
+    "#D75F07",
+    "#D7670F",
+    "#cf6f0f",
+    "#cf770f",
+    "#cf7f0f",
+    "#CF8717",
+    "#C78717",
+    "#C78F17",
+    "#C7971F",
+    "#BF9F1F",
+    "#BF9F1F",
+    "#BFA727",
+    "#BFA727",
+    "#BFAF2F",
+    "#B7AF2F",
+    "#B7B72F",
+    "#B7B737",
+    "#CFCF6F",
+    "#DFDF9F",
+    "#EFEFC7",
+    "#FFFFFF",
+  ];
 
   let fireData = createFireData(fireDataWidth, fireDataHeight);
 
@@ -10,7 +48,7 @@ function start() {
 
   setInterval(() => {
     fireData = updateFire(fireDataWidth, fireDataHeight, fireData);
-    renderFire(fireDataWidth, fireDataHeight, fireData);
+    renderFire(fireDataWidth, fireDataHeight, fireData, firePallete);
   }, 100);
 }
 
@@ -61,7 +99,7 @@ function updateFire(width, height, data) {
   return newFireData;
 }
 
-function renderFire(width, height, data) {
+function renderFire(width, height, data, palette) {
   const fireDiv = document.getElementById("fire");
 
   const fireTable = document.createElement("table");
@@ -71,8 +109,11 @@ function renderFire(width, height, data) {
 
     for (let j = 0; j < width; j++) {
       const fireIndex = i * width + j;
+      const fireIntensity = data[fireIndex];
+      const fireColor = palette[fireIntensity - 1];
       const fireCell = document.createElement("td");
-      fireCell.innerText = data[fireIndex];
+
+      fireCell.style.backgroundColor = fireColor;
 
       fireRow.appendChild(fireCell);
     }
