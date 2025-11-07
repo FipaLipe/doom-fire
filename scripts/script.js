@@ -1,47 +1,7 @@
 function start() {
-  console.log("Script has started!");
-
   const fireDataWidth = 200;
   const fireDataHeight = 200;
-  const firePallete = [
-    "#070707",
-    "#1f0707",
-    "#2f0f07",
-    "#470f07",
-    "#571707",
-    "#671f07",
-    "#771f07",
-    "#8f2707",
-    "#9f2f07",
-    "#af3f07",
-    "#bf4707",
-    "#c74707",
-    "#DF4F07",
-    "#DF5707",
-    "#DF5707",
-    "#D75F07",
-    "#D7670F",
-    "#cf6f0f",
-    "#cf770f",
-    "#cf7f0f",
-    "#CF8717",
-    "#C78717",
-    "#C78F17",
-    "#C7971F",
-    "#BF9F1F",
-    "#BF9F1F",
-    "#BFA727",
-    "#BFA727",
-    "#BFAF2F",
-    "#B7AF2F",
-    "#B7B72F",
-    "#B7B737",
-    "#CFCF6F",
-    "#DFDF9F",
-    "#EFEFC7",
-    "#FFFFFF",
-  ];
-
+  const fireCanvas = document.getElementById("fire");
   const firePalleteRGB = [
     "rgb(7, 7, 7)",
     "rgb(31, 7, 7)",
@@ -80,89 +40,109 @@ function start() {
     "rgb(239, 239, 199)",
     "rgb(255, 255, 255)",
   ];
+  const fireDecay = 1.25;
+  const fireWind = 1.25;
 
-  let fireData = createFireData(fireDataWidth, fireDataHeight);
+  const fire = new Fire(
+    fireDataWidth,
+    fireDataHeight,
+    fireCanvas,
+    firePalleteRGB,
+    fireDecay,
+    fireWind
+  );
 
-  fireData = addFireSource(fireDataWidth, fireDataHeight, fireData, 36);
+  fire.addFireSource(36);
 
-  setInterval(() => {
-    fireData = updateFire(fireDataWidth, fireDataHeight, fireData);
-    renderFire(fireDataWidth, fireDataHeight, fireData, firePalleteRGB);
-  }, 10);
+  fire.update();
 }
 
-function createFireData(width, height) {
-  let totalCellCount = width * height;
+class Fire {
+  constructor(width, height, canvas, palette, decay, wind) {
+    this.width = width;
+    this.height = height;
 
-  let newFireData = [];
-  for (let i = 0; i < totalCellCount; i++) {
-    newFireData.push(0);
+    this.canvas = canvas;
+    this.ctx = this.canvas.getContext("2d");
+    this.ctx.fillStyle = palette[0];
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.imageSmoothingEnabled = false;
+
+    this.cellSize = this.canvas.width / width;
+
+    this.palette = palette;
+    this.data = this.createFireData();
+
+    this.decay = decay;
+    this.wind = wind;
   }
 
-  return newFireData;
-}
+  createFireData() {
+    let totalCellCount = this.width * this.height;
 
-function addFireSource(width, height, data, source) {
-  const newFireData = data;
+    let newFireData = [];
+    for (let i = 0; i < totalCellCount; i++) {
+      newFireData.push(0);
+    }
 
-  const firstFireIndexAtLastRow = width * height - width;
-  const lastFireIndexAtLastRow = width * height - 1;
-
-  for (let i = firstFireIndexAtLastRow; i <= lastFireIndexAtLastRow; i++) {
-    newFireData[i] = source;
+    return newFireData;
   }
 
-  return newFireData;
-}
+  addFireSource(source) {
+    const firstFireIndexAtLastRow = this.width * this.height - this.width;
+    const lastFireIndexAtLastRow = this.width * this.height - 1;
 
-function updateFire(width, height, data) {
-  const newFireData = data;
+    for (let i = firstFireIndexAtLastRow; i <= lastFireIndexAtLastRow; i++) {
+      this.data[i] = source;
+    }
+  }
 
-  for (let j = 0; j < width; j++) {
-    for (let i = 0; i < height; i++) {
-      const fireIndex = i * width + j;
-      const fireIndexBelow = fireIndex + width;
+  spreadFire() {
+    for (let j = 0; j < this.width; j++) {
+      for (let i = 0; i < this.height; i++) {
+        const fireIndex = i * this.width + j;
+        const fireIndexBelow = fireIndex + this.width;
 
-      if (fireIndexBelow >= newFireData.length) {
-        continue;
+        if (fireIndexBelow >= this.data.length) {
+          continue;
+        }
+
+        const decay = Math.floor(Math.random() * this.decay);
+        const wind = Math.floor(Math.random() * this.wind);
+        let newFireValue = this.data[fireIndexBelow] - decay;
+        newFireValue = Math.max(newFireValue, 0);
+
+        this.data[fireIndex - wind] = newFireValue;
       }
-
-      const decay = Math.floor(Math.random() * 1.3);
-      const wind = Math.floor(Math.random() * 1.25);
-      let newFireValue = newFireData[fireIndexBelow] - decay;
-      newFireValue = Math.max(newFireValue, 0);
-
-      newFireData[fireIndex - wind] = newFireValue;
     }
   }
 
-  return newFireData;
-}
+  renderFire() {
+    for (let i = 0; i < this.height; i++) {
+      for (let j = 0; j < this.width; j++) {
+        const fireX = j * this.cellSize;
+        const fireY = i * this.cellSize;
+        const fireIndex = i * this.width + j;
+        const fireIntensity = this.data[fireIndex];
+        const fireIntensitySanitized = Math.min(
+          Math.max(0, fireIntensity),
+          this.palette.length - 1
+        );
+        const fireColor = this.palette[fireIntensitySanitized];
 
-function renderFire(width, height, data, palette) {
-  const fireCanvas = document.getElementById("fire");
-  const fireContext = fireCanvas.getContext("2d");
+        this.ctx.fillStyle = fireColor;
+        this.ctx.fillRect(fireX, fireY, this.cellSize, this.cellSize);
 
-  fireContext.fillStyle = palette[0];
-  fireContext.clearRect(0, 0, fireCanvas.width, fireCanvas.height);
-  fireContext.imageSmoothingEnabled = false;
-
-  const cellSize = fireCanvas.width / width;
-
-  for (let i = 0; i < height; i++) {
-    for (let j = 0; j < width; j++) {
-      const fireX = j * cellSize;
-      const fireY = i * cellSize;
-      const fireIndex = i * width + j;
-      const fireIntensity = data[fireIndex];
-      const fireColor = palette[fireIntensity];
-
-      fireContext.fillStyle = fireColor;
-      fireContext.fillRect(fireX, fireY, cellSize, cellSize);
-
-      //   console.log(fireX, fireY, fireCellSize, fireCellSize);
+        //   console.log(fireX, fireY, fireCellSize, fireCellSize);
+      }
     }
   }
+
+  update = () => {
+    this.spreadFire();
+    this.renderFire();
+    requestAnimationFrame(this.update);
+  };
 }
 
 document.addEventListener("DOMContentLoaded", () => {
