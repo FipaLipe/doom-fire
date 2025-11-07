@@ -1,8 +1,8 @@
 function start() {
   console.log("Script has started!");
 
-  const fireDataWidth = 10;
-  const fireDataHeight = 10;
+  const fireDataWidth = 100;
+  const fireDataHeight = 100;
   const firePallete = [
     "#070707",
     "#1f0707",
@@ -49,7 +49,7 @@ function start() {
   setInterval(() => {
     fireData = updateFire(fireDataWidth, fireDataHeight, fireData);
     renderFire(fireDataWidth, fireDataHeight, fireData, firePallete);
-  }, 100);
+  }, 60);
 }
 
 function createFireData(width, height) {
@@ -88,11 +88,12 @@ function updateFire(width, height, data) {
         continue;
       }
 
-      const decay = 1;
+      const decay = Math.floor(Math.random() * 2);
+      const wind = Math.floor(Math.random() * 2);
       let newFireValue = newFireData[fireIndexBelow] - decay;
       newFireValue = Math.max(newFireValue, 0);
 
-      newFireData[fireIndex] = newFireValue;
+      newFireData[fireIndex - wind] = newFireValue;
     }
   }
 
@@ -103,6 +104,8 @@ function renderFire(width, height, data, palette) {
   const fireDiv = document.getElementById("fire");
 
   const fireTable = document.createElement("table");
+  fireTable.style.aspectRatio = width / height;
+  const cellSize = 500 / width;
 
   for (let i = 0; i < height; i++) {
     const fireRow = document.createElement("tr");
@@ -114,6 +117,8 @@ function renderFire(width, height, data, palette) {
       const fireCell = document.createElement("td");
 
       fireCell.style.backgroundColor = fireColor;
+      fireCell.style.width = `${cellSize}px`;
+      fireCell.style.height = `${cellSize}px`;
 
       fireRow.appendChild(fireCell);
     }
