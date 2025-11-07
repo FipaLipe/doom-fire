@@ -1,0 +1,36 @@
+body {
+    background: linear-gradient(45deg, #2b0000 0%, #ad3700 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 'full';
+    height: 100vh;
+
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #F2F2F2;
+
+    overflow: hidden;
+}
+
+h1 {
+    font-size: 48pt;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+
+h2 {
+    font-size: 12pt;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: rgb(255, 255, 255);
+}
+
+a:hover {
+    color: #FC0
+}
