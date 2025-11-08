@@ -36,7 +36,6 @@ a:hover {
 }
 
 #fire {
-  margin-top: 24px;
   border-radius: 20px;
   overflow: hidden;
 
@@ -102,4 +101,32 @@ table tr td {
 
   transform: scale(105%);
   cursor: pointer;
+}
+
+#main {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 24px;
+}
+
+#hue-range {
+  writing-mode: vertical-lr;
+  direction: rtl;
+  vertical-align: middle;
+
+  background: linear-gradient(to top, orange, green, cyan, blue, magenta, red);
+
+  width: 20px;
+  height: 500px;
+}
+
+#hue-range::-webkit-slider-runnable-track {
+  background: linear-gradient(to top, orange, green, cyan, blue, magenta, red);
+  height: 6px;
+  border-radius: 3px;
 }

@@ -45,6 +45,7 @@ function start() {
   const fireDecay = 1.25;
   const fireWind = 1.25;
   const fireIntensityLabel = document.getElementById("intensity-label");
+  const fireHue = 0;
 
   fire = new Fire(
     fireDataWidth,
@@ -53,7 +54,8 @@ function start() {
     firePalleteRGB,
     fireDecay,
     fireWind,
-    fireIntensityLabel
+    fireIntensityLabel,
+    fireHue
   );
 
   fire.setFireIntensity(36);
@@ -69,16 +71,30 @@ function incrementIntensity() {
   fire.incrementIntensity();
 }
 
-async function minimizeIntensity() {
-  await fire.minimizeIntensity();
+function minimizeIntensity() {
+  fire.minimizeIntensity();
 }
 
 function maximizeIntensity() {
   fire.maximizeIntensity();
 }
 
+function setHue(hueValue) {
+  console.log(hueValue);
+  fire.setHue(hueValue);
+}
+
 class Fire {
-  constructor(width, height, canvas, palette, decay, wind, intensityLabel) {
+  constructor(
+    width,
+    height,
+    canvas,
+    palette,
+    decay,
+    wind,
+    intensityLabel,
+    hue
+  ) {
     this.width = width;
     this.height = height;
 
@@ -98,6 +114,8 @@ class Fire {
 
     this.intensity = 0;
     this.intensityLabel = intensityLabel;
+
+    this.hue = hue;
   }
 
   createFireData() {
@@ -130,12 +148,17 @@ class Fire {
     this.setFireIntensity(this.intensity - 1);
   }
 
-  async minimizeIntensity() {
+  minimizeIntensity() {
     this.setFireIntensity(0);
   }
 
-  async maximizeIntensity() {
+  maximizeIntensity() {
     this.setFireIntensity(this.palette.length - 1);
+  }
+
+  setHue(hueValue) {
+    this.hue = hueValue;
+    this.canvas.style.filter = `hue-rotate(${hueValue}deg)`;
   }
 
   spreadFire() {
