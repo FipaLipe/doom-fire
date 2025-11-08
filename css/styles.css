@@ -13,6 +13,25 @@ body {
   overflow: hidden;
 }
 
+#start {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background-color: #070707c0;
+  color: #f2f2f2;
+
+  font-size: 30pt;
+  font-family: "Pixelify Sans", Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  z-index: 20;
+}
+
 h1 {
   font-size: 48pt;
   font-weight: bold;

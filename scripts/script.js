@@ -1,6 +1,9 @@
 let fire;
 
 function start() {
+  const startButton = document.getElementById("start");
+  startButton.hidden = true;
+
   const fireDataWidth = 200;
   const fireDataHeight = 200;
   const fireCanvas = document.getElementById("fire");
@@ -46,6 +49,14 @@ function start() {
   const fireWind = 1.25;
   const fireIntensityLabel = document.getElementById("intensity-label");
   const fireHue = 0;
+  const fireAudios = {
+    fire: new Audio("assets/fire.mp3"),
+    decrement: new Audio("assets/decrement.wav"),
+    increment: new Audio("assets/increment.wav"),
+    minimize: new Audio("assets/minimize.wav"),
+    maximize: new Audio("assets/maximize.wav"),
+    burst: new Audio("assets/burst.wav"),
+  };
 
   fire = new Fire(
     fireDataWidth,
@@ -55,7 +66,8 @@ function start() {
     fireDecay,
     fireWind,
     fireIntensityLabel,
-    fireHue
+    fireHue,
+    fireAudios
   );
 
   fire.setFireIntensity(36);
@@ -80,15 +92,11 @@ function maximizeIntensity() {
 }
 
 function setHue(hueValue) {
-  console.log(hueValue);
   fire.setHue(hueValue);
 }
 
 function burstFire() {
-  fire.setFireIntensity(fire.intensity + 10);
-  setTimeout(() => {
-    fire.setFireIntensity(fire.intensity - 10);
-  }, 1000);
+  fire.burst();
 }
 
 class Fire {
@@ -100,7 +108,8 @@ class Fire {
     decay,
     wind,
     intensityLabel,
-    hue
+    hue,
+    audios
   ) {
     this.width = width;
     this.height = height;
@@ -119,10 +128,15 @@ class Fire {
     this.decay = decay;
     this.wind = wind;
 
-    this.intensity = 0;
     this.intensityLabel = intensityLabel;
+    this.maxIntensity = this.palette.length;
+    this.intensity = this.maxIntensity;
 
     this.hue = hue;
+    this.audios = audios;
+
+    this.audios.fire.play();
+    this.audios.fire.loop = true;
   }
 
   createFireData() {
@@ -137,6 +151,10 @@ class Fire {
   }
 
   setFireIntensity(intensity) {
+    this.audios.fire.volume = Math.min(intensity / this.maxIntensity, 1);
+
+    this.audios.increment.frequency = intensity;
+
     this.intensity = intensity;
     this.intensityLabel.innerText = `INTENSITY: ${this.intensity}`;
     const firstFireIndexAtLastRow = this.width * this.height - this.width;
@@ -149,18 +167,31 @@ class Fire {
 
   incrementIntensity() {
     this.setFireIntensity(this.intensity + 1);
+    this.audios.increment.play();
   }
 
   decrementIntensity() {
     this.setFireIntensity(this.intensity - 1);
+    this.audios.decrement.play();
   }
 
   minimizeIntensity() {
     this.setFireIntensity(0);
+    this.audios.minimize.play();
   }
 
   maximizeIntensity() {
-    this.setFireIntensity(this.palette.length - 1);
+    this.setFireIntensity(this.maxIntensity);
+    this.audios.maximize.play();
+  }
+
+  burst() {
+    this.audios.burst.play();
+
+    this.setFireIntensity(this.intensity + 10);
+    setTimeout(() => {
+      this.setFireIntensity(this.intensity - 10);
+    }, 1000);
   }
 
   setHue(hueValue) {
@@ -197,7 +228,7 @@ class Fire {
         const fireIntensity = this.data[fireIndex];
         const fireIntensitySanitized = Math.min(
           Math.max(0, fireIntensity),
-          this.palette.length - 1
+          this.maxIntensity - 1
         );
         const fireColor = this.palette[fireIntensitySanitized];
 
@@ -215,7 +246,3 @@ class Fire {
     requestAnimationFrame(this.update);
   };
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  start();
-});
