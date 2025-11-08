@@ -4,6 +4,28 @@ function start() {
   const startButton = document.getElementById("start");
   startButton.hidden = true;
 
+  const volumeIcon = document.getElementById("volume-icon");
+  const volumeSlider = document.getElementById("volume-slider");
+
+  volumeIcon.addEventListener("click", () => {
+    if (fire.volume <= 0) {
+      fire.changeVolume(volumeSlider.value);
+      volumeIcon.innerText = "🔊";
+    } else {
+      fire.changeVolume(0);
+      volumeIcon.innerText = "🔈";
+    }
+  });
+
+  volumeSlider.addEventListener("input", (e) => {
+    fire.changeVolume(e.target.value);
+    if (e.target.value <= 0) {
+      volumeIcon.innerText = "🔈";
+    } else {
+      volumeIcon.innerText = "🔊";
+    }
+  });
+
   const fireDataWidth = 200;
   const fireDataHeight = 200;
   const fireCanvas = document.getElementById("fire");
@@ -99,6 +121,10 @@ function burstFire() {
   fire.burst();
 }
 
+function changeVolume(volume) {
+  fire.changeVolume(volume);
+}
+
 class Fire {
   constructor(
     width,
@@ -137,6 +163,7 @@ class Fire {
 
     this.audios.fire.play();
     this.audios.fire.loop = true;
+    this.volume = 1;
   }
 
   createFireData() {
@@ -151,7 +178,8 @@ class Fire {
   }
 
   setFireIntensity(intensity) {
-    this.audios.fire.volume = Math.min(intensity / this.maxIntensity, 1);
+    this.audios.fire.volume =
+      Math.min(intensity / this.maxIntensity, 1) * this.volume;
 
     this.audios.increment.frequency = intensity;
 
@@ -238,6 +266,15 @@ class Fire {
         //   console.log(fireX, fireY, fireCellSize, fireCellSize);
       }
     }
+  }
+
+  changeVolume(volume) {
+    this.volume = volume;
+    Object.values(this.audios).forEach((audio) => {
+      audio.volume = volume;
+    });
+
+    this.setFireIntensity(this.intensity);
   }
 
   update = () => {

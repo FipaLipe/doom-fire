@@ -10,15 +10,15 @@ body {
   font-family: "Pixelify Sans", Verdana, Geneva, Tahoma, sans-serif;
   color: #f2f2f2;
 
-  overflow: hidden;
+  padding: 12px 0;
 }
 
 #start {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
 
   background-color: #070707c0;
   color: #f2f2f2;
@@ -28,6 +28,8 @@ body {
   font-weight: 800;
 
   cursor: pointer;
+
+  border: none;
 
   z-index: 20;
 }
@@ -155,4 +157,14 @@ table tr td {
   background: linear-gradient(to top, orange, green, cyan, blue, magenta, red);
   height: 6px;
   border-radius: 3px;
+}
+
+#volume-slider {
+  width: 500px;
+
+  margin-top: 24px;
+}
+
+#volume-icon {
+  cursor: pointer;
 }
