@@ -5,7 +5,7 @@ body {
   align-items: center;
   justify-content: center;
   width: "full";
-  height: 100vh;
+  height: 90vh;
 
   font-family: "Pixelify Sans", Verdana, Geneva, Tahoma, sans-serif;
   color: #f2f2f2;
@@ -35,7 +35,7 @@ body {
 }
 
 h1 {
-  font-size: 48pt;
+  font-size: 36pt;
   font-weight: bold;
   margin: 0;
   padding: 0;
@@ -65,8 +65,9 @@ a:hover {
 
 canvas {
   border-collapse: collapse;
-  width: 500px;
-  height: 500px;
+  max-width: 500px;
+  width: 80vw;
+  aspect-ratio: 1;
 
   background-color: #070707;
 }
@@ -97,12 +98,16 @@ table tr td {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: 8px;
+  justify-content: space-between;
+  gap: 4px 0;
   padding: 16px;
   background-color: #f8f8f840;
 
   border-radius: 8px;
   border: solid #f2f2f2 1px;
+
+  max-width: 500px;
+  width: 80vw;
 }
 
 #inputs button {
@@ -110,9 +115,9 @@ table tr td {
   border-style: none;
   border-radius: 4px;
 
-  padding: 4px 30px;
+  padding: 4px;
 
-  width: 23.7%;
+  width: 24%;
 
   font-size: 16pt;
   font-family: "Pixelify Sans", Verdana, Geneva, Tahoma, sans-serif;
@@ -150,7 +155,8 @@ table tr td {
   background: linear-gradient(to top, orange, green, cyan, blue, magenta, red);
 
   width: 20px;
-  height: 500px;
+  max-height: 500px;
+  height: 80vw;
 }
 
 #hue-range::-webkit-slider-runnable-track {
@@ -160,7 +166,8 @@ table tr td {
 }
 
 #volume-slider {
-  width: 500px;
+  max-width: 500px;
+  width: 80vw;
 
   margin-top: 24px;
 }

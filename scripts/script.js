@@ -184,7 +184,7 @@ class Fire {
     this.audios.increment.frequency = intensity;
 
     this.intensity = intensity;
-    this.intensityLabel.innerText = `INTENSITY: ${this.intensity}`;
+    this.intensityLabel.innerText = `FIRE INTENSITY: ${this.intensity}`;
     const firstFireIndexAtLastRow = this.width * this.height - this.width;
     const lastFireIndexAtLastRow = this.width * this.height - 1;
 
