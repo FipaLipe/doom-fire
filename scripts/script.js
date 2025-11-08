@@ -84,6 +84,13 @@ function setHue(hueValue) {
   fire.setHue(hueValue);
 }
 
+function burstFire() {
+  fire.setFireIntensity(fire.intensity + 10);
+  setTimeout(() => {
+    fire.setFireIntensity(fire.intensity - 10);
+  }, 1000);
+}
+
 class Fire {
   constructor(
     width,

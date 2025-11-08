@@ -75,6 +75,7 @@ table tr td {
 #inputs {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   gap: 8px;
   padding: 16px;
   background-color: #f8f8f840;
@@ -90,6 +91,8 @@ table tr td {
 
   padding: 4px 30px;
 
+  width: 23.7%;
+
   font-size: 16pt;
   font-family: "Pixelify Sans", Verdana, Geneva, Tahoma, sans-serif;
 
@@ -101,6 +104,10 @@ table tr td {
 
   transform: scale(105%);
   cursor: pointer;
+}
+
+#inputs #burst {
+  width: 100%;
 }
 
 #main {
