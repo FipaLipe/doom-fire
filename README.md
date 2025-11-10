@@ -1,6 +1,6 @@
 # Doom Fire
 
-Um algorítmo simples que simula o fogo como no videogame DOOM.
+Um algoritmo simples que simula o fogo como no videogame DOOM.
 
 <img src="assets/print.png" width="200">
 
@@ -8,7 +8,7 @@ Um algorítmo simples que simula o fogo como no videogame DOOM.
 
 Decidi desenvolver este projeto após assistir à [este vídeo](https://www.youtube.com/watch?v=fxm8cadCqbs) do [Filipe Deschamps](https://github.com/filipedeschamps).
 
-No vídeo, o Filipe explica sobre como funciona o algorítmo que gera o efeito de fogo do DOOM, e implementa ele linha por linha.
+No vídeo, o Filipe explica sobre como funciona o algoritmo que gera o efeito de fogo do DOOM, e implementa ele linha por linha.
 
 Eu utilizei a mesma lógica apresentada pelo Deschamps, mas quis implementar do meu jeito, sem seguir à risca o código que ele demonstrou.
 
